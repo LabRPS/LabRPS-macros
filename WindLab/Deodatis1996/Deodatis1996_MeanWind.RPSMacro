@@ -49,6 +49,11 @@ loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation", "Location Dis
 if not loc:
     LabRPS.Console.PrintError("Error on creating the location distribution.\n")
 
+v1 = vec(0, 0, 35)
+v2 = vec(0, 0, 40)
+v3 = vec(0, 0, 140)
+loc.Locations = [v1, v2, v3]
+
 # create new mean wind profile feature in the simulation called "Simulation"
 mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Mean Wind Profile",  "RPS Logarithmic Low")
     
