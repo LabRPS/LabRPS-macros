@@ -34,7 +34,6 @@ sim = WindLabObjects.makeSimulation(doc)
 # check if the simulation is successfully created
 if not sim:
     LabRPS.Console.PrintError("The simulation does not exist.\n")
-    return None
     
 # set simulation parameters
 sim.NumberOfFrequency = 2048
@@ -49,7 +48,6 @@ loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation", "Location Dis
 # check if the created location distribution feature is null
 if not loc:
     LabRPS.Console.PrintError("Error on creating the location distribution.\n")
-    return None
 
 # create new mean wind profile feature in the simulation called "Simulation"
 mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Mean Wind Profile",  "RPS Logarithmic Low")
@@ -57,7 +55,6 @@ mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Mean Wind Profile"
 # check if the created mean wind feature
 if not mean:
     LabRPS.Console.PrintError("The creation of the mean wind profile was not successuful.\n")
-    return None
 
 mean.TerrainRoughness = '0.001266 m' 
 mean.ShearVelocity = '1.76 m/s' 

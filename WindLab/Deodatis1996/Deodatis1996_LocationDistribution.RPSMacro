@@ -34,7 +34,6 @@ sim = WindLabObjects.makeSimulation(doc)
 # check if the simulation is successfully created
 if not sim:
     LabRPS.Console.PrintError("The simulation does not exist.\n")
-    return None
     
 # set simulation parameters
 sim.NumberOfFrequency = 2048
@@ -49,7 +48,6 @@ loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation", "Location Dis
 # check if the created location distribution feature is null
 if not loc:
     LabRPS.Console.PrintError("Error on creating the location distribution.\n")
-    return None
 
 # find all the feature which are location distribution feature
 myFeatures = sim.findAllWindLabFeaturesOfThisType('WindLabAPI::WindLabFeatureLocationDistribution')
