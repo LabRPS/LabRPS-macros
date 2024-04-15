@@ -1,0 +1,2 @@
+*.RPSMacro linguist-language=Python
+*.rpsmacro linguist-language=Python

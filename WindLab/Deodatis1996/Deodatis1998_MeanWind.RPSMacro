@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+# (c) Koffi Daniel 2024
+
+__Name__ = 'Deodatis1998MeanWind'
+__Comment__ = 'Creates mean wind profile feature according to Deodatis 1996'
+__Author__ = 'Koffi Daniel'
+__Version__ = '0.1.0'
+__Date__ = '15/04/2024'
+__License__ = ''
+__Web__ = ''
+__Wiki__ = ''
+__Icon__ = ''
+__Help__ = 'Select an object'
+__Status__ = 'alpha'
+__Requires__ = ''
+__Contact__ = 'https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=2364'
+__Communication__ = ''
+__Files__ = 
+
+import LabRPS
+from LabRPS import Vector as vec
+
+import WindLab
+import WindLabObjects
+
+#install the WindLab plugin with all its plugged features
+installResuslt = WindLab.installPlugin("WindLabPlugin")
+
+doc = LabRPS.newDocument()
+
+# create new simulation with default name "Simulation"
+sim = WindLabObjects.makeSimulation(doc)
+    
+# check if the simulation is successfully created
+if not sim:
+    LabRPS.Console.PrintError("The simulation does not exist.\n")
+    return None
+    
+# set simulation parameters
+sim.NumberOfFrequency = 2048
+sim.MaxFrequency = "0.64 Hz" # 4 rad/s;
+sim.FrequencyIncrement = "0.00031 Hz" # 0.00195 rad/s;
+sim.TimeIncrement = "0.785 s"
+sim.NumberOfTimeIncrements = 9651
+
+# create new location distribution in the simulation called "Simulation". Without simulation location mean wind profile cannot run
+loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation", "Location Distribution",  "General Distribution")
+    
+# check if the created location distribution feature is null
+if not loc:
+    LabRPS.Console.PrintError("Error on creating the location distribution.\n")
+    return None
+
+# create new mean wind profile feature in the simulation called "Simulation"
+mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Mean Wind Profile",  "RPS Logarithmic Low")
+    
+# check if the created mean wind feature
+if not mean:
+    LabRPS.Console.PrintError("The creation of the mean wind profile was not successuful.\n")
+    return None
+
+mean.TerrainRoughness = '0.001266 m' 
+mean.ShearVelocity = '1.76 m/s' 
+
+# wind velocity in this example is stationary. Meanning wind speed means are not varying in time
+# here we use time instant of 0 second.
+time = 0.0
+
+# compute the mean wind speed at all simulation points at time instant of 0s
+meanValues = sim.computeMeanWindSpeedVectorP(time)
+
+# if we are in Gui mode, show the stored result in Alphaplot
+if LabRPS.GuiUp and showGui:
+    import WindLabGui
+    #show the mean wind speeds in Alphaplot
+    WindLabGui.WindLabPythonPluginUtilities.showArray(sim.getSimulationData().numberOfSpatialPosition, 2, meanValues)
+doc.recompute()
