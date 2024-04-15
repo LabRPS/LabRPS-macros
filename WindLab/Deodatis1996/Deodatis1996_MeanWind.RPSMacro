@@ -15,7 +15,7 @@ __Status__ = 'alpha'
 __Requires__ = ''
 __Contact__ = 'https://forum.freecadweb.org/memberlist.php?mode=viewprofile&u=2364'
 __Communication__ = ''
-__Files__ = 
+__Files__ =  ''
 
 import LabRPS
 from LabRPS import Vector as vec
