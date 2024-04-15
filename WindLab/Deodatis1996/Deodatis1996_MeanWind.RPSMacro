@@ -67,7 +67,7 @@ time = 0.0
 meanValues = sim.computeMeanWindSpeedVectorP(time)
 
 # if we are in Gui mode, show the stored result in Alphaplot
-if LabRPS.GuiUp and showGui:
+if LabRPS.GuiUp:
     import WindLabGui
     #show the mean wind speeds in Alphaplot
     WindLabGui.WindLabPythonPluginUtilities.showArray(sim.getSimulationData().numberOfSpatialPosition, 2, meanValues)

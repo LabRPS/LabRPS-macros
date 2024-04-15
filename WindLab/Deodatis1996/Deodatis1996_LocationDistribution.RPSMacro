@@ -65,7 +65,7 @@ loc.Locations = [v1, v2, v3]
 # Note that here, this method will be called for the active location distribution feature
 locRes = sim.computeLocationCoordinateMatrixP3()
 
-if LabRPS.GuiUp and showGui:
+if LabRPS.GuiUp:
     import WindLabGui
     #show the location coordinate in Alphaplot
     WindLabGui.WindLabPythonPluginUtilities.showArray(sim.getSimulationData().numberOfSpatialPosition, 4, locRes)
