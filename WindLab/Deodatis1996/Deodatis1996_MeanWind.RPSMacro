@@ -40,7 +40,7 @@ class Deodatis1996MeanWind():
             return None
 
         # create new location distribution in the simulation called "Simulation". Without simulation location mean wind profile cannot run
-        loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation", "Location Distribution",  "General Distribution")
+        loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation",  "General Distribution", "Location Distribution")
     
         # check if the created location distribution feature is null
         if not loc:
@@ -53,7 +53,7 @@ class Deodatis1996MeanWind():
         loc.Locations = [v1, v2, v3]
 
         # create new mean wind profile feature in the simulation called "Simulation"
-        mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Mean Wind Profile",  "RPS Logarithmic Low")
+        mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation", "Logarithmic Law Profile", "Mean Wind Profile")
     
         # check if the created mean wind feature is successuful
         if not mean:
@@ -72,9 +72,9 @@ class Deodatis1996MeanWind():
 
         # if we are in Gui mode, show the stored result in Alphaplot
         if LabRPS.GuiUp:
-            import WindLabGui
+            import GeneralToolsGui
             #show the mean wind speeds in Alphaplot
-            WindLabGui.WindLabPyTool.showArray(sim.getSimulationData().numberOfSpatialPosition, 2, meanValues)
+            GeneralToolsGui.GeneralToolsPyTool.showArray(sim.getSimulationData().numberOfSpatialPosition, 2, meanValues, False)
         doc.recompute()
 
 Deodatis1996MeanWind()
