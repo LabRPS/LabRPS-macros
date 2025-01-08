@@ -1,0 +1,116 @@
+# -*- coding: utf-8 -*-
+# (c) Koffi Daniel 2024
+
+__Name__ = 'Deodatis1996SimulationMethod'
+__Comment__ = 'Simulate random velocity according to Deodatis 1996'
+__Author__ = 'Koffi Daniel'
+__Version__ = '0.1.0'
+__Date__ = '08/01/2025'
+__License__ = ''
+__Web__ = ''
+__Wiki__ = 'https://wiki.labrps.com/Macro_Deodatis_1996_Simulation_Method'
+__Icon__ = ''
+__Help__ = ''
+__Status__ = ''
+__Requires__ = ''
+__Contact__ = ''
+__Communication__ = ''
+__Files__ =  ''
+
+import LabRPS
+import WindLab
+import WindLabObjects
+from LabRPS import Vector as vec
+import time 
+
+def simulate():
+    # Plugin
+    installResuslt = WindLab.installPlugin("WindLabPlugin")
+    if not installResuslt:
+       LabRPS.Console.PrintError("The installation the WindLabPlugin has failed.\n")
+       return None
+
+    # Document
+    doc = LabRPS.newDocument()
+
+    # Simulation
+    sim = WindLabObjects.makeSimulation(doc, "Simulation")
+    if not sim:
+       LabRPS.Console.PrintError("The simulation does not exist.\n")
+       return None
+
+    # Simulation points
+    loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation",  "General Distribution", "Location Distribution")
+    if not loc:
+        LabRPS.Console.PrintError("Error on creating the location distribution.\n")
+        return None
+
+    v1 = vec(0, 0, 35)
+    v2 = vec(0, 0, 40)
+    v3 = vec(0, 0, 140)
+    loc.Locations = [v1, v2, v3]
+
+    # Mean wind Profile
+    mean = WindLabObjects.makeFeature("MeanSpeed", "Simulation",  "Logarithmic Law Profile", "Mean Wind Profile")
+    if not mean:
+        LabRPS.Console.PrintError("The creation of the mean wind profile was not successuful.\n")
+        return None
+
+    mean.TerrainRoughness = '0.001266 m' 
+    mean.ShearVelocity = '1.76 m/s'
+
+    # Frequencies
+    frequency = WindLabObjects.makeFeature("Frequencies", "Simulation",  "Double Index Frequency Discretization", "Frequency Distribution")   
+    if not frequency:
+        LabRPS.Console.PrintError("Error on creating the frequency distribution.\n")
+        return None
+
+    # Spectrum
+    spectrum = WindLabObjects.makeFeature("Spectrum", "Simulation",  "Kaimal Along Wind Spectrum", "Along Wind Spectrum")
+    if not spectrum:
+        LabRPS.Console.PrintError("Error on creating the spectrum model.\n")
+        return None
+    
+    # Coherence
+    coherence = WindLabObjects.makeFeature("CoherenceFunction", "Simulation",  "Davenport Coherence Function", "Coherence Function")
+    if not coherence:
+        LabRPS.Console.PrintError("The creation of the coherence was not successuful.\n")
+        return None
+    coherence.ExponentialDecayCz = 10 
+
+    # Spectrum decomposition
+    spectrumD = WindLabObjects.makeFeature("SpectrumDecomposition", "Simulation",  "Cholesky Decomposition", "Spectrum Decomposition Method")
+    if not spectrumD:
+        LabRPS.Console.PrintError("Error on creating the spectrum decomposition method.\n")
+        return None
+    
+    # Random phase
+    randomness = WindLabObjects.makeFeature("RandomPhases", "Simulation",  "Uniform Random Phases", "Randomness Provider")
+    if not randomness:
+        LabRPS.Console.PrintError("The creation of the randomness provider was not successuful.\n")
+        return None
+
+    # Simulation method
+    simMethod = WindLabObjects.makeFeature("SimulationMethod", "Simulation",  "Deodatis 1996", "Simulation Method")
+    if not simMethod:
+        LabRPS.Console.PrintError("Error on creating the simulation method.\n")
+        return None
+    
+    # Run simulation and output the first(0) sample
+    # store starting time 
+    begin = time.time() 
+    velocities = sim.simulate(0)
+    # store end time 
+    end = time.time()
+    LabRPS.Console.PrintMessage(f"Total runtime of the simulaltion is {end - begin} seconds\n")
+
+    if LabRPS.GuiUp:
+       import WindLabGui
+       import GeneralToolsGui
+       WindLabGui.setActiveSimulation(sim)
+       GeneralToolsGui.GeneralToolsPyTool.showArray(sim.getSimulationData().numberOfTimeIncrements, sim.getSimulationData().numberOfSpatialPosition + 1, velocities, True)
+
+simulate()
+
+
+ 
