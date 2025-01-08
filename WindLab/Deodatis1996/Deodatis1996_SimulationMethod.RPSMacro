@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# (c) Koffi Daniel 2024
+# (c) Koffi Daniel 2025
 
 __Name__ = 'Deodatis1996SimulationMethod'
-__Comment__ = 'Simulate random velocity according to Deodatis 1996'
+__Comment__ = 'Simulate random wind velocity according to Deodatis 1996'
 __Author__ = 'Koffi Daniel'
 __Version__ = '0.1.0'
 __Date__ = '08/01/2025'
