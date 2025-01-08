@@ -38,6 +38,13 @@ def simulate():
     if not sim:
        LabRPS.Console.PrintError("The simulation does not exist.\n")
        return None
+     
+    # set simulation parameters
+    sim.NumberOfFrequency = 2048
+    sim.MaxFrequency = "0.64 Hz" # 4 rad/s;
+    sim.FrequencyIncrement = "0.00031 Hz" # 0.00195 rad/s;
+    sim.TimeIncrement = "0.785 s"
+    sim.NumberOfTimeIncrements = 9651
 
     # Simulation points
     loc = WindLabObjects.makeFeature("SimulationPoints", "Simulation",  "General Distribution", "Location Distribution")
